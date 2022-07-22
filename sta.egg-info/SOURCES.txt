@@ -1,0 +1,8 @@
+setup.py
+sta.py
+sta.egg-info/PKG-INFO
+sta.egg-info/SOURCES.txt
+sta.egg-info/dependency_links.txt
+sta.egg-info/entry_points.txt
+sta.egg-info/requires.txt
+sta.egg-info/top_level.txt
