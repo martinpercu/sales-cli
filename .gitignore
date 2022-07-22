@@ -2,3 +2,5 @@ __pycache__/
 venv/
 
 clients/.clients.csv
+
+.clients.csv
