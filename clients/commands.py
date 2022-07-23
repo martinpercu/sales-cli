@@ -48,9 +48,9 @@ def list(ctx):
 
     clients_list = client_service.list_clients()  
     
-    click.echo('\n' + '-' * 70)
-    click.echo('       ID    |    NAME    |    COMPANY    |     EMAIL     |     POSITION   ')
-    click.echo('-' * 70)
+    click.echo('\n' + '-' * 90)
+    click.echo('         ID      |     NAME      |     COMPANY     |      EMAIL      |      POSITION   ')
+    click.echo('-' * 90)
 
     for client in clients_list:
         click.echo('{uid} | {name} | {company} | {email} | {position}'.format(
@@ -64,16 +64,60 @@ def list(ctx):
 
 
 @clients.command()
+@click.argument('client_uid',type=str)
 @click.pass_context
-def update(ctx):
+def update(ctx, client_uid):
     """Update client"""
-    pass
+    client_service = ClientService(ctx.obj['clients_table'])
+    
+    clients_list = client_service.list_clients()
+
+    client = [client for client in clients_list if client['uid'] == client_uid]
+
+    if client:
+        click.echo(client)
+        client = _update_client_flow(Client(**client[0]))
+        click.echo('Client is .. tan tan tatanup0')
+        click.echo(client)
+        client_service.update_client(client)
+
+        click.echo('Client is updated')
+    else:
+        click.echo('Client not found')
+
+
+def _update_client_flow(client):
+    click.echo('Leave empty if yo dont want to change the value')
+
+    client.name = click.prompt('New name', type=str, default=client.name)
+    client.company = click.prompt('New company', type=str, default=client.company)
+    client.email = click.prompt('New email', type=str, default=client.email)
+    client.position = click.prompt('New position', type=str, default=client.position)
+
+    return client
+
+
+
 
 @clients.command()
+@click.argument('client_uid',type=str)
 @click.pass_context
-def delete(ctx):
+def delete(ctx, client_uid):
     """Delete client"""
-    pass
+    client_service = ClientService(ctx.obj['clients_table'])
+    
+    clients_list = client_service.list_clients()
+
+    client = [client for client in clients_list if client['uid'] == client_uid]
+
+    if client == []:
+        return click.echo('No client with this ID')
+    else:
+        client_service.delete_client(Client(**client[0]))   
+        click.echo('Client was deleted')
+
+  
+
 
 
 all = clients
