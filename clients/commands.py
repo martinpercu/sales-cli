@@ -75,10 +75,8 @@ def update(ctx, client_uid):
     client = [client for client in clients_list if client['uid'] == client_uid]
 
     if client:
-        click.echo(client)
         client = _update_client_flow(Client(**client[0]))
         click.echo('Client is .. tan tan tatanup0')
-        click.echo(client)
         client_service.update_client(client)
 
         click.echo('Client is updated')
@@ -110,11 +108,13 @@ def delete(ctx, client_uid):
 
     client = [client for client in clients_list if client['uid'] == client_uid]
 
+    client_name = client[0]['name'] # This get the name of the client will be deleted to be use only in the confirmation message
+
     if client == []:
         return click.echo('No client with this ID')
     else:
         client_service.delete_client(Client(**client[0]))   
-        click.echo('Client was deleted')
+        click.echo('Client named "{}" was deleted'.format(client_name))
 
   
 
